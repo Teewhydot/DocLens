@@ -1,0 +1,304 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		06D511B3B294D3EEFA2102A9 /* DocumentEntities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6F9CEF1A3A58A8ACB563DD /* DocumentEntities.swift */; };
+		1B58D21685DAE3EE1E4E695C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1754776BF605981DAF38C204 /* HomeView.swift */; };
+		1F050793E1329CA9DCFEE46F /* UIComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8302B45F0F2DCC204EFB8EA2 /* UIComponents.swift */; };
+		292FD7D460364E44C9648DCD /* DocLensApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56936170C7EF7B84C70780C7 /* DocLensApp.swift */; };
+		5F611E40CE51813E82671558 /* DocumentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B88390870FADBF09BFB8CE5 /* DocumentCell.swift */; };
+		60366E5C83E7C5F2FD83AFCB /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82F3FAED45B8EB16F87CED6 /* Theme.swift */; };
+		6C153A179AEDD599558B495E /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C04A263D8DAA242B3B8CC0A /* HomeViewModel.swift */; };
+		74701C7E6F556561B3219D86 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BEF84251E9E0319AFC9BBD2F /* Assets.xcassets */; };
+		7E785CE90E781CAB0BC39820 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E6B616DDB399929309DE30E /* LaunchScreen.storyboard */; };
+		C09025C367D72CC8D6C2C81E /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F1A3F6C101F0E09462A806 /* MainTabView.swift */; };
+		C5F7F3511F858961AC715D3F /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34001A819564E899EEA5AF50 /* RootView.swift */; };
+		EA06BDD2BBC7240511A99BC5 /* SampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A2504A9CCA64AA9B19976F /* SampleData.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1754776BF605981DAF38C204 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		1B88390870FADBF09BFB8CE5 /* DocumentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentCell.swift; sourceTree = "<group>"; };
+		1D3D5A9122D97DA8BE180650 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		34001A819564E899EEA5AF50 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		3C04A263D8DAA242B3B8CC0A /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		441FA58AC86A2DC3B8AAA5A4 /* DocLens.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = DocLens.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		56936170C7EF7B84C70780C7 /* DocLensApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocLensApp.swift; sourceTree = "<group>"; };
+		78F1A3F6C101F0E09462A806 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		83011721497D4E94A4912C36 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8302B45F0F2DCC204EFB8EA2 /* UIComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIComponents.swift; sourceTree = "<group>"; };
+		99A2504A9CCA64AA9B19976F /* SampleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleData.swift; sourceTree = "<group>"; };
+		B82F3FAED45B8EB16F87CED6 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		BEF84251E9E0319AFC9BBD2F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CC6F9CEF1A3A58A8ACB563DD /* DocumentEntities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentEntities.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		346421C580CE124257B6CC5B /* DocLens */ = {
+			isa = PBXGroup;
+			children = (
+				BEF84251E9E0319AFC9BBD2F /* Assets.xcassets */,
+				1D3D5A9122D97DA8BE180650 /* Info.plist */,
+				0E6B616DDB399929309DE30E /* LaunchScreen.storyboard */,
+				DA0061EB3FA9CC8BD8F5A465 /* App */,
+				6DDA138BFA3DC640E7715329 /* Domain */,
+				E49E6D48758DA4660C6149FE /* Presentation */,
+			);
+			path = DocLens;
+			sourceTree = "<group>";
+		};
+		58A7FC547709258E0D09AE97 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				1B88390870FADBF09BFB8CE5 /* DocumentCell.swift */,
+				1754776BF605981DAF38C204 /* HomeView.swift */,
+				3C04A263D8DAA242B3B8CC0A /* HomeViewModel.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		5C1E1EAC3333A8F75E55030A /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				99A2504A9CCA64AA9B19976F /* SampleData.swift */,
+				8302B45F0F2DCC204EFB8EA2 /* UIComponents.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		6DDA138BFA3DC640E7715329 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				CE1CCCA58A2653847EBC7ACD /* Entities */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		6F6BF642F3DF2D609F60E1D4 = {
+			isa = PBXGroup;
+			children = (
+				346421C580CE124257B6CC5B /* DocLens */,
+				79CDA4A5C14711548FF6FD46 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		79CDA4A5C14711548FF6FD46 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				441FA58AC86A2DC3B8AAA5A4 /* DocLens.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		85DC5AE626DFC4F26CA789E5 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				B82F3FAED45B8EB16F87CED6 /* Theme.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+		CE1CCCA58A2653847EBC7ACD /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				CC6F9CEF1A3A58A8ACB563DD /* DocumentEntities.swift */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		DA0061EB3FA9CC8BD8F5A465 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				56936170C7EF7B84C70780C7 /* DocLensApp.swift */,
+				34001A819564E899EEA5AF50 /* RootView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		E49E6D48758DA4660C6149FE /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				78F1A3F6C101F0E09462A806 /* MainTabView.swift */,
+				5C1E1EAC3333A8F75E55030A /* Common */,
+				58A7FC547709258E0D09AE97 /* Home */,
+				85DC5AE626DFC4F26CA789E5 /* Theme */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		592C64FA6B1910C51855DF68 /* DocLens */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 91B3F4FE9751D0C67467C281 /* Build configuration list for PBXNativeTarget "DocLens" */;
+			buildPhases = (
+				3C2055010945F2F55E2B039F /* Sources */,
+				9B29711A28EA6A17A0CAAD1E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DocLens;
+			packageProductDependencies = (
+			);
+			productName = DocLens;
+			productReference = 441FA58AC86A2DC3B8AAA5A4 /* DocLens.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F7D88E7641C7BC6D92F90340 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+			};
+			buildConfigurationList = C1AF09C5D0269B937083404E /* Build configuration list for PBXProject "DocLens" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 6F6BF642F3DF2D609F60E1D4;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				592C64FA6B1910C51855DF68 /* DocLens */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9B29711A28EA6A17A0CAAD1E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				74701C7E6F556561B3219D86 /* Assets.xcassets in Resources */,
+				7E785CE90E781CAB0BC39820 /* LaunchScreen.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3C2055010945F2F55E2B039F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				292FD7D460364E44C9648DCD /* DocLensApp.swift in Sources */,
+				5F611E40CE51813E82671558 /* DocumentCell.swift in Sources */,
+				06D511B3B294D3EEFA2102A9 /* DocumentEntities.swift in Sources */,
+				1B58D21685DAE3EE1E4E695C /* HomeView.swift in Sources */,
+				6C153A179AEDD599558B495E /* HomeViewModel.swift in Sources */,
+				C09025C367D72CC8D6C2C81E /* MainTabView.swift in Sources */,
+				C5F7F3511F858961AC715D3F /* RootView.swift in Sources */,
+				EA06BDD2BBC7240511A99BC5 /* SampleData.swift in Sources */,
+				60366E5C83E7C5F2FD83AFCB /* Theme.swift in Sources */,
+				1F050793E1329CA9DCFEE46F /* UIComponents.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		0E6B616DDB399929309DE30E /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				83011721497D4E94A4912C36 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		55DD08D09CA73BB21567E6C3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = DocLens/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.superapp.doclens;
+			};
+			name = Debug;
+		};
+		5D7CCC9E41A4003F4025B577 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = DocLens/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.superapp.doclens;
+			};
+			name = Release;
+		};
+		8E6B64032F952AADF5CCBFF4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CURRENT_PROJECT_VERSION = 1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_NAME = DocLens;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9C1676B9C1880542D1E136C9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_NS_ASSERTIONS = NO;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_NAME = DocLens;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		91B3F4FE9751D0C67467C281 /* Build configuration list for PBXNativeTarget "DocLens" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				55DD08D09CA73BB21567E6C3 /* Debug */,
+				5D7CCC9E41A4003F4025B577 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C1AF09C5D0269B937083404E /* Build configuration list for PBXProject "DocLens" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8E6B64032F952AADF5CCBFF4 /* Debug */,
+				9C1676B9C1880542D1E136C9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F7D88E7641C7BC6D92F90340 /* Project object */;
+}
