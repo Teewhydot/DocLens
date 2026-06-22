@@ -1,16 +1,18 @@
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct HomeView: View {
-    @StateObject private var viewModel: HomeViewModel
-
-    init(viewModel: HomeViewModel = HomeViewModel(documents: SampleData.documents)) {
-        _viewModel = StateObject(wrappedValue: viewModel)
-    }
+    @EnvironmentObject private var store: DocumentStore
+    @State private var showImportOptions = false
+    @State private var showFilePicker = false
+    @State private var showImagePicker = false
+    @State private var pendingDeletion: DocumentEntity?
+    @State private var selectedDoc: DocumentEntity?
 
     var body: some View {
         NavigationStack {
             Group {
-                if viewModel.isEmpty {
+                if store.documents.isEmpty {
                     emptyState
                 } else {
                     documentList
@@ -19,43 +21,58 @@ struct HomeView: View {
             .background(Theme.background.ignoresSafeArea())
             .navigationTitle("DocLens")
             .toolbar { toolbarContent }
-            .confirmationDialog("Import Document", isPresented: $viewModel.showImportOptions, titleVisibility: .visible) {
-                Button("Import PDF") {}
-                Button("Import Image") {}
+            .confirmationDialog("Import Document", isPresented: $showImportOptions, titleVisibility: .visible) {
+                Button("Import PDF") { showFilePicker = true }
+                Button("Import Image") { showImagePicker = true }
                 Button("Cancel", role: .cancel) {}
             }
-            .alert("Delete Document?", isPresented: deletionBinding) {
-                Button("Delete", role: .destructive) { viewModel.confirmDelete() }
-                Button("Cancel", role: .cancel) { viewModel.pendingDeletion = nil }
+            .alert("Delete Document?", isPresented: deletionActiveBinding) {
+                Button("Delete", role: .destructive) { confirmDelete() }
+                Button("Cancel", role: .cancel) { pendingDeletion = nil }
             } message: {
-                Text("This will permanently remove “\(viewModel.pendingDeletion?.title ?? "")” and its analysis.")
+                Text("This will permanently remove \"\(pendingDeletion?.title ?? "")\" and its analysis.")
+            }
+            .fileImporter(isPresented: $showFilePicker, allowedContentTypes: [.pdf]) { result in
+                handleImport(result: result, type: .pdf)
+            }
+            .sheet(item: $selectedDoc) { doc in
+                DocumentViewerView(document: doc, fileURL: nil)
+                    .environmentObject(store)
             }
         }
     }
 
-    // MARK: Subviews
+    // MARK: - Document List
 
     private var documentList: some View {
         List {
             Section {
-                ForEach(viewModel.documents) { doc in
-                    DocumentCell(document: doc)
-                        .listRowInsets(EdgeInsets(top: 4, leading: Theme.rowHPadding, bottom: 4, trailing: Theme.rowHPadding))
-                        .swipeActions(edge: .trailing) {
-                            Button(role: .destructive) {
-                                viewModel.requestDelete(doc)
-                            } label: {
-                                Label("Delete", systemImage: "trash")
-                            }
+                ForEach(store.documents) { doc in
+                    Button {
+                        selectedDoc = doc
+                    } label: {
+                        DocumentCell(document: doc)
+                    }
+                    .buttonStyle(.plain)
+                    .listRowInsets(EdgeInsets(top: 4, leading: Theme.rowHPadding, bottom: 4, trailing: Theme.rowHPadding))
+                    .swipeActions(edge: .trailing) {
+                        Button(role: .destructive) {
+                            pendingDeletion = doc
+                        } label: {
+                            Label("Delete", systemImage: "trash")
                         }
+                    }
                 }
             } header: {
-                Text("\(viewModel.documents.count) document\(viewModel.documents.count == 1 ? "" : "s")")
+                let n = store.documents.count
+                Text("\(n) document\(n == 1 ? "" : "s")")
             }
         }
         .listStyle(.insetGrouped)
         .scrollContentBackground(.hidden)
     }
+
+    // MARK: - Empty State
 
     private var emptyState: some View {
         EmptyStateView(
@@ -63,35 +80,51 @@ struct HomeView: View {
             title: "No documents yet",
             message: "Import your first contract to get started. Everything is analyzed privately, right on your device.",
             ctaTitle: "Import Document",
-            action: { viewModel.showImportOptions = true }
+            action: { showImportOptions = true }
         )
     }
+
+    // MARK: - Toolbar
 
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
             Button {
-                viewModel.showImportOptions = true
+                showImportOptions = true
             } label: {
-                Image(systemName: "plus")
-                    .font(.headline)
+                Image(systemName: "plus").font(.headline)
             }
             .accessibilityLabel("Import document")
         }
     }
 
-    private var deletionBinding: Binding<Bool> {
-        Binding(
-            get: { viewModel.pendingDeletion != nil },
-            set: { if !$0 { viewModel.pendingDeletion = nil } }
-        )
+    // MARK: - Helpers
+
+    private var deletionActiveBinding: Binding<Bool> {
+        Binding(get: { pendingDeletion != nil }, set: { if !$0 { pendingDeletion = nil } })
+    }
+
+    private func confirmDelete() {
+        if let doc = pendingDeletion { store.delete(doc) }
+        pendingDeletion = nil
+    }
+
+    private func handleImport(result: Result<URL, Error>, type: FileType) {
+        guard case .success(let url) = result else { return }
+        let title = url.deletingPathExtension().lastPathComponent
+        let doc = DocumentEntity(title: title, fileType: type, status: .pending)
+        store.add(doc)
+        selectedDoc = doc
     }
 }
 
 #Preview("Populated") {
-    HomeView(viewModel: .mock)
+    HomeView().environmentObject(DocumentStore.shared)
+        .tint(Theme.accent)
 }
 
 #Preview("Empty") {
-    HomeView(viewModel: .mockEmpty)
+    let emptyStore = DocumentStore.shared
+    HomeView().environmentObject(emptyStore)
+        .tint(Theme.accent)
 }
