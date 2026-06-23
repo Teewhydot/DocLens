@@ -7,7 +7,7 @@ struct SettingsView: View {
     @AppStorage("defaultSortNewest") private var sortNewest = true
     @State private var showResetConfirm = false
     @State private var showClearHistoryConfirm = false
-    @EnvironmentObject private var store: DocumentStore
+    @StateObject private var viewModel = SettingsViewModel()
 
     private let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
     private let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1"
@@ -29,7 +29,9 @@ struct SettingsView: View {
                 Text("You'll see the DocLens intro screens next time you open the app.")
             }
             .alert("Clear All History?", isPresented: $showClearHistoryConfirm) {
-                Button("Clear All", role: .destructive) { store.clearAll() }
+                Button("Clear All", role: .destructive) { 
+                    Task { await viewModel.clearAllHistory() }
+                }
                 Button("Cancel", role: .cancel) {}
             } message: {
                 Text("All analyzed documents and results will be permanently deleted from this device.")
@@ -182,6 +184,5 @@ struct SettingsLabelStyle: LabelStyle {
 
 #Preview {
     SettingsView()
-        .environmentObject(DocumentStore.shared)
         .tint(Theme.accent)
 }

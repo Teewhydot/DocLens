@@ -1,12 +1,12 @@
 import SwiftUI
 
 struct HistoryView: View {
-    @EnvironmentObject private var store: DocumentStore
+    @StateObject private var viewModel = HistoryViewModel()
     @State private var searchText = ""
     @State private var selectedFilter: HistoryFilter = .all
 
     private var filtered: [DocumentEntity] {
-        store.documents
+        viewModel.documents
             .filter { selectedFilter.matches($0) }
             .filter { searchText.isEmpty || $0.title.localizedCaseInsensitiveContains(searchText) }
             .sorted { $0.importedAt > $1.importedAt }
@@ -32,7 +32,7 @@ struct HistoryView: View {
     var body: some View {
         NavigationStack {
             Group {
-                if store.documents.isEmpty {
+                if viewModel.documents.isEmpty {
                     emptyState
                 } else {
                     contentList
@@ -42,6 +42,9 @@ struct HistoryView: View {
             .navigationTitle("History")
             .searchable(text: $searchText, prompt: "Search documents…")
             .toolbar { filterMenu }
+            .task {
+                await viewModel.fetchDocuments()
+            }
         }
     }
 
@@ -74,7 +77,7 @@ struct HistoryView: View {
     }
 
     private var statsBanner: some View {
-        let completed = store.documents.filter { $0.status == .complete }
+        let completed = viewModel.documents.filter { $0.status == .complete }
         let avgRisk: Double = completed.isEmpty ? 0 :
             completed.map(\.riskScore).reduce(0, +) / Double(completed.count)
         let highCount = completed.filter { $0.riskScore >= 0.6 }.count
@@ -141,7 +144,6 @@ struct HistoryView: View {
 
 struct HistoryRow: View {
     let doc: DocumentEntity
-    @EnvironmentObject private var store: DocumentStore
 
     var body: some View {
         NavigationLink(destination: destinationView) {
@@ -249,6 +251,5 @@ enum HistoryFilter: String, CaseIterable, Identifiable {
 
 #Preview {
     HistoryView()
-        .environmentObject(DocumentStore.shared)
         .tint(Theme.accent)
 }

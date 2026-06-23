@@ -101,15 +101,12 @@ enum SampleData {
 
     // MARK: - Preview store factory
 
-    /// Returns the shared DocumentStore populated with sample data for previews.
+    /// Populates the repository with sample data for previews.
     @MainActor
-    static func makePreviewStore() -> DocumentStore {
-        let store = DocumentStore.shared
-        if store.documents.isEmpty {
-            for doc in documents { store.add(doc) }
-            for (id, entities) in entityMentions { store.setEntities(entities, for: id) }
-            for (id, flags) in riskFlags { store.setFlags(flags, for: id) }
-        }
-        return store
+    static func populateCoreData(repository: DocumentRepository) async {
+        guard let docs = try? await repository.getAllDocuments(), docs.isEmpty else { return }
+        for doc in documents { try? await repository.saveDocument(doc) }
+        for (id, entities) in entityMentions { try? await repository.saveEntities(entities, for: id) }
+        for (id, flags) in riskFlags { try? await repository.saveRiskFlags(flags, for: id) }
     }
 }

@@ -25,17 +25,15 @@ struct PDFKitView: UIViewRepresentable {
 // MARK: - Main Viewer
 
 struct DocumentViewerView: View {
-    let document: DocumentEntity
-
+    @StateObject private var viewModel: DocumentViewerViewModel
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var store: DocumentStore
-    @State private var isAnalyzing = false
-    @State private var analysisError: String?
-    @State private var showResults = false
-    @State private var showError = false
+
+    init(document: DocumentEntity) {
+        _viewModel = StateObject(wrappedValue: DocumentViewerViewModel(document: document))
+    }
 
     private var currentDoc: DocumentEntity {
-        store.documents.first { $0.id == document.id } ?? document
+        viewModel.document
     }
 
     var body: some View {
@@ -44,17 +42,19 @@ struct DocumentViewerView: View {
                 Theme.background.ignoresSafeArea()
                 contentView
             }
-            .navigationTitle(document.title)
+            .navigationTitle(currentDoc.title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { toolbarItems }
-            .sheet(isPresented: $showResults) {
+            .sheet(isPresented: $viewModel.showResults) {
                 AnalysisResultsView(document: currentDoc)
-                    .environmentObject(store)
             }
-            .alert("Analysis Failed", isPresented: $showError) {
+            .alert("Analysis Failed", isPresented: $viewModel.showError) {
                 Button("OK", role: .cancel) {}
             } message: {
-                Text(analysisError ?? "An unknown error occurred.")
+                Text(viewModel.analysisError ?? "An unknown error occurred.")
+            }
+            .task {
+                await viewModel.refreshDocument()
             }
         }
     }
@@ -118,14 +118,14 @@ struct DocumentViewerView: View {
     private var trailingToolbarItem: some View {
         let doc = currentDoc
         if doc.status == .complete {
-            Button { showResults = true } label: {
+            Button { viewModel.showResults = true } label: {
                 Label("Analysis", systemImage: "chart.bar.doc.horizontal")
             }
             .tint(Theme.accent)
-        } else if doc.status == .processing || isAnalyzing {
+        } else if doc.status == .processing || viewModel.isAnalyzing {
             ProgressView().tint(Theme.accent)
         } else if doc.resolvedFileURL != nil && doc.status != .complete {
-            Button { runAnalysis() } label: {
+            Button { viewModel.runAnalysis() } label: {
                 Label("Analyze", systemImage: "sparkles")
             }
             .tint(Theme.accent)
@@ -134,43 +134,5 @@ struct DocumentViewerView: View {
 
     // MARK: - Analysis
 
-    private func runAnalysis() {
-        guard let url = currentDoc.resolvedFileURL else { return }
-        isAnalyzing = true
-        let docSnapshot = currentDoc
-        let processing = DocumentEntity(id: docSnapshot.id, title: docSnapshot.title,
-                                         importedAt: docSnapshot.importedAt, fileType: docSnapshot.fileType,
-                                         savedFileName: docSnapshot.savedFileName, extractedText: "",
-                                         detectedLanguage: "—", riskScore: 0, status: .processing)
-        store.update(processing)
-        Task {
-            do {
-                let result = try await AnalysisService.shared.analyze(url: url, fileType: docSnapshot.fileType)
-                let completed = DocumentEntity(id: docSnapshot.id, title: docSnapshot.title,
-                                               importedAt: docSnapshot.importedAt, fileType: docSnapshot.fileType,
-                                               savedFileName: docSnapshot.savedFileName,
-                                               extractedText: result.extractedText,
-                                               detectedLanguage: result.detectedLanguage,
-                                               riskScore: result.riskScore, status: .complete)
-                await MainActor.run {
-                    store.update(completed)
-                    store.setEntities(result.entities, for: docSnapshot.id)
-                    store.setFlags(result.flags, for: docSnapshot.id)
-                    isAnalyzing = false
-                    showResults = true
-                }
-            } catch {
-                await MainActor.run {
-                    analysisError = error.localizedDescription
-                    showError = true
-                    isAnalyzing = false
-                    let failed = DocumentEntity(id: docSnapshot.id, title: docSnapshot.title,
-                                                importedAt: docSnapshot.importedAt, fileType: docSnapshot.fileType,
-                                                savedFileName: docSnapshot.savedFileName, extractedText: "",
-                                                detectedLanguage: "—", riskScore: 0, status: .failed)
-                    store.update(failed)
-                }
-            }
-        }
-    }
+    // Logic moved to DocumentViewerViewModel
 }

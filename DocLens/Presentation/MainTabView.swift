@@ -17,6 +17,5 @@ struct MainTabView: View {
 
 #Preview {
     MainTabView()
-        .environmentObject(DocumentStore.shared)
         .tint(Theme.accent)
 }

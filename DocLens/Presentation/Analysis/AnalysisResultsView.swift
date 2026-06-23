@@ -2,12 +2,16 @@ import SwiftUI
 import Charts
 
 struct AnalysisResultsView: View {
-    let document: DocumentEntity
-    @EnvironmentObject private var store: DocumentStore
+    @StateObject private var viewModel: AnalysisResultsViewModel
     @Environment(\.dismiss) private var dismiss
 
-    private var flags: [RiskFlagEntity] { store.flags(for: document.id) }
-    private var entities: [EntityMentionEntity] { store.entities(for: document.id) }
+    init(document: DocumentEntity) {
+        _viewModel = StateObject(wrappedValue: AnalysisResultsViewModel(document: document))
+    }
+
+    private var flags: [RiskFlagEntity] { viewModel.flags }
+    private var entities: [EntityMentionEntity] { viewModel.entities }
+    private var document: DocumentEntity { viewModel.document }
 
     var body: some View {
         NavigationStack {
@@ -28,6 +32,9 @@ struct AnalysisResultsView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Done") { dismiss() }
                 }
+            }
+            .task {
+                await viewModel.fetchData()
             }
         }
     }

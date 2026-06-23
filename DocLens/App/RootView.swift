@@ -1,14 +1,12 @@
 import SwiftUI
 
 struct RootView: View {
-    @StateObject private var store = DocumentStore.shared
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
 
     var body: some View {
         ZStack {
             MainTabView()
                 .tint(Theme.accent)
-                .environmentObject(store)
 
             if !hasCompletedOnboarding {
                 OnboardingView {

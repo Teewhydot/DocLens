@@ -3,7 +3,7 @@ import UniformTypeIdentifiers
 import PhotosUI
 
 struct HomeView: View {
-    @EnvironmentObject private var store: DocumentStore
+    @StateObject private var viewModel = HomeViewModel()
     @State private var showImportOptions = false
     @State private var showFilePicker = false
     @State private var photoPickerItem: PhotosPickerItem?
@@ -15,7 +15,7 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             Group {
-                if store.documents.isEmpty {
+                if viewModel.documents.isEmpty {
                     emptyState
                 } else {
                     documentList
@@ -54,7 +54,9 @@ struct HomeView: View {
             }
             .sheet(item: $selectedDoc) { doc in
                 DocumentViewerView(document: doc)
-                    .environmentObject(store)
+            }
+            .task {
+                await viewModel.fetchDocuments()
             }
         }
     }
@@ -64,7 +66,7 @@ struct HomeView: View {
     private var documentList: some View {
         List {
             Section {
-                ForEach(store.documents) { doc in
+                ForEach(viewModel.documents) { doc in
                     Button { selectedDoc = doc } label: { DocumentCell(document: doc) }
                         .buttonStyle(.plain)
                         .listRowInsets(EdgeInsets(top: 4, leading: Theme.rowHPadding, bottom: 4, trailing: Theme.rowHPadding))
@@ -75,7 +77,7 @@ struct HomeView: View {
                         }
                 }
             } header: {
-                let n = store.documents.count
+                let n = viewModel.documents.count
                 Text("\(n) document\(n == 1 ? "" : "s")")
             }
         }
@@ -121,7 +123,9 @@ struct HomeView: View {
     }
 
     private func confirmDelete() {
-        if let doc = pendingDeletion { store.delete(doc) }
+        if let doc = pendingDeletion {
+            Task { await viewModel.deleteDocument(doc) }
+        }
         pendingDeletion = nil
     }
 
@@ -136,17 +140,16 @@ struct HomeView: View {
             guard let url = urls.first else { return }
             let accessing = url.startAccessingSecurityScopedResource()
             defer { if accessing { url.stopAccessingSecurityScopedResource() } }
-            do {
-                let (_, filename) = try store.importFile(from: url, fileType: .pdf)
-                let title = url.deletingPathExtension().lastPathComponent
-                var doc = DocumentEntity(title: title, fileType: .pdf, savedFileName: filename)
-                store.add(doc)
-                doc = store.documents.first { $0.savedFileName == filename } ?? doc
-                Task { await runAnalysis(for: doc) }
-                selectedDoc = doc
-            } catch {
-                importError = error.localizedDescription
-                showImportError = true
+            Task {
+                do {
+                    let doc = try await viewModel.importDocument(from: url, type: .pdf)
+                    await MainActor.run { selectedDoc = doc }
+                } catch {
+                    await MainActor.run {
+                        importError = error.localizedDescription
+                        showImportError = true
+                    }
+                }
             }
         }
     }
@@ -157,14 +160,12 @@ struct HomeView: View {
         Task {
             do {
                 guard let data = try await item.loadTransferable(type: Data.self) else { return }
-                let filename = UUID().uuidString + ".jpg"
-                let dest = DocumentStore.documentsFolder.appendingPathComponent(filename)
-                try data.write(to: dest, options: .atomic)
-                let title = "Image \(Date().formatted(.dateTime.month().day().hour().minute()))"
-                var doc = DocumentEntity(title: title, fileType: .image, savedFileName: filename)
-                await MainActor.run { store.add(doc) }
-                doc = await MainActor.run { store.documents.first { $0.savedFileName == filename } ?? doc }
-                await runAnalysis(for: doc)
+                
+                // Write data to temporary file
+                let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".jpg")
+                try data.write(to: tempURL)
+                
+                let doc = try await viewModel.importDocument(from: tempURL, type: .image)
                 await MainActor.run { selectedDoc = doc }
             } catch {
                 await MainActor.run {
@@ -178,39 +179,7 @@ struct HomeView: View {
 
     // MARK: - Analysis pipeline
 
-    private func runAnalysis(for doc: DocumentEntity) async {
-        guard let fileURL = doc.resolvedFileURL else { return }
-        // Mark as processing
-        var processing = doc
-        processing = DocumentEntity(id: doc.id, title: doc.title, importedAt: doc.importedAt,
-                                    fileType: doc.fileType, savedFileName: doc.savedFileName,
-                                    extractedText: "", detectedLanguage: "—",
-                                    riskScore: 0, status: .processing)
-        await MainActor.run { store.update(processing) }
-        do {
-            let result = try await AnalysisService.shared.analyze(url: fileURL, fileType: doc.fileType)
-            let completed = DocumentEntity(id: doc.id, title: doc.title, importedAt: doc.importedAt,
-                                           fileType: doc.fileType, savedFileName: doc.savedFileName,
-                                           extractedText: result.extractedText,
-                                           detectedLanguage: result.detectedLanguage,
-                                           riskScore: result.riskScore, status: .complete)
-            await MainActor.run {
-                store.update(completed)
-                store.setEntities(result.entities, for: doc.id)
-                store.setFlags(result.flags, for: doc.id)
-            }
-        } catch {
-            let failed = DocumentEntity(id: doc.id, title: doc.title, importedAt: doc.importedAt,
-                                        fileType: doc.fileType, savedFileName: doc.savedFileName,
-                                        extractedText: "", detectedLanguage: "—",
-                                        riskScore: 0, status: .failed)
-            await MainActor.run {
-                store.update(failed)
-                importError = error.localizedDescription
-                showImportError = true
-            }
-        }
-    }
+    // Moved to DocumentViewerViewModel and AnalyzeDocumentUseCase
 }
 
 // MARK: - Binding extension for PhotosPicker trigger
@@ -221,11 +190,11 @@ private extension Binding where Value == Bool {
 }
 
 #Preview("Populated") {
-    HomeView().environmentObject(SampleData.makePreviewStore())
+    HomeView()
         .tint(Theme.accent)
 }
 
 #Preview("Empty") {
-    HomeView().environmentObject(DocumentStore.shared)
+    HomeView()
         .tint(Theme.accent)
 }
