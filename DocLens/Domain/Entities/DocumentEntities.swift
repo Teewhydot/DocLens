@@ -70,11 +70,13 @@ enum RiskSeverity: String, Codable {
 
 // MARK: - Domain models
 
-struct DocumentEntity: Identifiable, Hashable {
+struct DocumentEntity: Identifiable, Hashable, Codable {
     let id: UUID
     var title: String
     var importedAt: Date
     var fileType: FileType
+    /// Relative filename inside the app's Documents/DocLens/ folder (or nil for unsaved docs)
+    var savedFileName: String?
     var extractedText: String
     var detectedLanguage: String
     var riskScore: Double          // 0.0 – 1.0
@@ -85,6 +87,7 @@ struct DocumentEntity: Identifiable, Hashable {
         title: String,
         importedAt: Date = .now,
         fileType: FileType = .pdf,
+        savedFileName: String? = nil,
         extractedText: String = "",
         detectedLanguage: String = "—",
         riskScore: Double = 0,
@@ -94,6 +97,7 @@ struct DocumentEntity: Identifiable, Hashable {
         self.title = title
         self.importedAt = importedAt
         self.fileType = fileType
+        self.savedFileName = savedFileName
         self.extractedText = extractedText
         self.detectedLanguage = detectedLanguage
         self.riskScore = riskScore
@@ -101,9 +105,16 @@ struct DocumentEntity: Identifiable, Hashable {
     }
 
     var riskScoreOutOf100: Int { Int((riskScore * 100).rounded()) }
+
+    /// Resolves the absolute URL for the saved file (if any).
+    var resolvedFileURL: URL? {
+        guard let name = savedFileName else { return nil }
+        let base = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        return base.appendingPathComponent("DocLens", isDirectory: true).appendingPathComponent(name)
+    }
 }
 
-struct EntityMentionEntity: Identifiable, Hashable {
+struct EntityMentionEntity: Identifiable, Hashable, Codable {
     let id: UUID
     var type: EntityType
     var value: String
@@ -117,7 +128,7 @@ struct EntityMentionEntity: Identifiable, Hashable {
     }
 }
 
-struct RiskFlagEntity: Identifiable, Hashable {
+struct RiskFlagEntity: Identifiable, Hashable, Codable {
     let id: UUID
     var keyword: String
     var category: RiskCategory

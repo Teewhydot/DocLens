@@ -15,7 +15,6 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             List {
-                privacySection
                 preferencesSection
                 aboutSection
                 dangerSection
@@ -35,33 +34,6 @@ struct SettingsView: View {
             } message: {
                 Text("All analyzed documents and results will be permanently deleted from this device.")
             }
-        }
-    }
-
-    // MARK: - Privacy Section
-
-    private var privacySection: some View {
-        Section {
-            PrivacyFeatureRow(
-                icon: "lock.shield.fill",
-                color: Color(hex: 0x2A9D8F),
-                title: "100% On-Device",
-                subtitle: "All analysis runs locally — your documents never leave your device."
-            )
-            PrivacyFeatureRow(
-                icon: "eye.slash.fill",
-                color: Theme.accent,
-                title: "No Data Collection",
-                subtitle: "DocLens does not collect, transmit, or store any personal data."
-            )
-            PrivacyFeatureRow(
-                icon: "network.slash",
-                color: Theme.amber,
-                title: "No Internet Required",
-                subtitle: "Analysis works fully offline at all times."
-            )
-        } header: {
-            sectionHeader("Privacy", icon: "lock.fill")
         }
     }
 
@@ -106,14 +78,6 @@ struct SettingsView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
-
-            Button {
-                hasCompletedOnboarding = false
-            } label: {
-                Label("View Intro Screens Again", systemImage: "play.rectangle.fill")
-                    .labelStyle(SettingsLabelStyle(color: Color(hex: 0x2A9D8F)))
-            }
-            .foregroundStyle(.primary)
 
             Link(destination: URL(string: "https://apple.com/legal/privacy")!) {
                 HStack {
