@@ -45,4 +45,10 @@ final class DocumentStore: ObservableObject {
     func flags(for docId: UUID) -> [RiskFlagEntity] {
         riskFlags[docId] ?? []
     }
+
+    func clearAll() {
+        documents = []
+        entityMentions = [:]
+        riskFlags = [:]
+    }
 }

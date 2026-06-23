@@ -10,6 +10,7 @@
 		06D511B3B294D3EEFA2102A9 /* DocumentEntities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6F9CEF1A3A58A8ACB563DD /* DocumentEntities.swift */; };
 		08AD6444EEF6D4AB8C456AD1 /* AnalysisResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F702FD6FC857A0C68B8451 /* AnalysisResultsView.swift */; };
 		1B58D21685DAE3EE1E4E695C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1754776BF605981DAF38C204 /* HomeView.swift */; };
+		1EB1DE88A260D5D5F93800DB /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAC79D134EDB8AB47C828E0 /* SettingsView.swift */; };
 		1F050793E1329CA9DCFEE46F /* UIComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8302B45F0F2DCC204EFB8EA2 /* UIComponents.swift */; };
 		292FD7D460364E44C9648DCD /* DocLensApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56936170C7EF7B84C70780C7 /* DocLensApp.swift */; };
 		2F0FB58C5D77D8AD57EB7D91 /* RiskRingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10D16F88F90E4D2A1842BEE /* RiskRingView.swift */; };
@@ -18,6 +19,7 @@
 		60366E5C83E7C5F2FD83AFCB /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82F3FAED45B8EB16F87CED6 /* Theme.swift */; };
 		74701C7E6F556561B3219D86 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BEF84251E9E0319AFC9BBD2F /* Assets.xcassets */; };
 		7E785CE90E781CAB0BC39820 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E6B616DDB399929309DE30E /* LaunchScreen.storyboard */; };
+		8F995D63F3B8E80877B96063 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8F60888ABEF9371B7D6EA3 /* HistoryView.swift */; };
 		A302344F8CADE4F26C5BF139 /* AnalysisService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924279D0CF9B62D7F27CCFFB /* AnalysisService.swift */; };
 		A38588562F27E7FB7F438D84 /* DocumentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8DB6AB90BB318B623CBF38 /* DocumentStore.swift */; };
 		B0F54A40B64480F58B37A0C5 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E10D9DFF569E0AE438AD67 /* OnboardingView.swift */; };
@@ -33,9 +35,11 @@
 		1D3D5A9122D97DA8BE180650 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		22F702FD6FC857A0C68B8451 /* AnalysisResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisResultsView.swift; sourceTree = "<group>"; };
 		34001A819564E899EEA5AF50 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		3DAC79D134EDB8AB47C828E0 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		441FA58AC86A2DC3B8AAA5A4 /* DocLens.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = DocLens.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		56936170C7EF7B84C70780C7 /* DocLensApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocLensApp.swift; sourceTree = "<group>"; };
 		78F1A3F6C101F0E09462A806 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		7F8F60888ABEF9371B7D6EA3 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		83011721497D4E94A4912C36 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8302B45F0F2DCC204EFB8EA2 /* UIComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIComponents.swift; sourceTree = "<group>"; };
 		924279D0CF9B62D7F27CCFFB /* AnalysisService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisService.swift; sourceTree = "<group>"; };
@@ -121,6 +125,14 @@
 			path = Onboarding;
 			sourceTree = "<group>";
 		};
+		94253532D7677CA081FC4194 /* History */ = {
+			isa = PBXGroup;
+			children = (
+				7F8F60888ABEF9371B7D6EA3 /* HistoryView.swift */,
+			);
+			path = History;
+			sourceTree = "<group>";
+		};
 		95E7F73B05AB4D62F432C2DD /* Viewer */ = {
 			isa = PBXGroup;
 			children = (
@@ -170,12 +182,22 @@
 				78F1A3F6C101F0E09462A806 /* MainTabView.swift */,
 				D6AE97313504EECEAB1309DF /* Analysis */,
 				5C1E1EAC3333A8F75E55030A /* Common */,
+				94253532D7677CA081FC4194 /* History */,
 				58A7FC547709258E0D09AE97 /* Home */,
 				91FD8B8911C9B2E8061DAF4E /* Onboarding */,
+				F34CFAD7664A865AF39A3D8F /* Settings */,
 				85DC5AE626DFC4F26CA789E5 /* Theme */,
 				95E7F73B05AB4D62F432C2DD /* Viewer */,
 			);
 			path = Presentation;
+			sourceTree = "<group>";
+		};
+		F34CFAD7664A865AF39A3D8F /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				3DAC79D134EDB8AB47C828E0 /* SettingsView.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -251,12 +273,14 @@
 				06D511B3B294D3EEFA2102A9 /* DocumentEntities.swift in Sources */,
 				A38588562F27E7FB7F438D84 /* DocumentStore.swift in Sources */,
 				31B6FE6E581BEBF99F282363 /* DocumentViewerView.swift in Sources */,
+				8F995D63F3B8E80877B96063 /* HistoryView.swift in Sources */,
 				1B58D21685DAE3EE1E4E695C /* HomeView.swift in Sources */,
 				C09025C367D72CC8D6C2C81E /* MainTabView.swift in Sources */,
 				B0F54A40B64480F58B37A0C5 /* OnboardingView.swift in Sources */,
 				2F0FB58C5D77D8AD57EB7D91 /* RiskRingView.swift in Sources */,
 				C5F7F3511F858961AC715D3F /* RootView.swift in Sources */,
 				EA06BDD2BBC7240511A99BC5 /* SampleData.swift in Sources */,
+				1EB1DE88A260D5D5F93800DB /* SettingsView.swift in Sources */,
 				60366E5C83E7C5F2FD83AFCB /* Theme.swift in Sources */,
 				1F050793E1329CA9DCFEE46F /* UIComponents.swift in Sources */,
 			);
