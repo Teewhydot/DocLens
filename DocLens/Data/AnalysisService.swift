@@ -170,6 +170,9 @@ actor AnalysisService {
         ("indemnif", .liability, .high),
         ("hold harmless", .liability, .high),
         ("unlimited liability", .liability, .high),
+        ("power of attorney", .liability, .high),
+        ("waive all claims", .liability, .high),
+        ("work on weekends", .liability, .high),
         ("consequential damages", .liability, .medium),
         ("liquidated damages", .penalties, .medium),
         // IP Assignment
@@ -184,6 +187,8 @@ actor AnalysisService {
         ("non-solicitation", .nonCompete, .medium),
         // Penalties
         ("penalty", .penalties, .medium),
+        ("forfeit", .penalties, .high),
+        ("terminate without cause", .liability, .high),
         ("late fee", .penalties, .low),
         ("interest at the rate", .penalties, .low),
         // Auto-renewal
@@ -195,6 +200,7 @@ actor AnalysisService {
         ("binding arbitration", .arbitration, .high),
         ("waives right to jury", .arbitration, .high),
         ("class action waiver", .arbitration, .high),
+        ("exclusive jurisdiction", .arbitration, .high),
         ("dispute resolution", .arbitration, .low),
     ]
 
@@ -212,8 +218,8 @@ actor AnalysisService {
     private func extractExcerpt(for keyword: String, in text: String) -> String {
         let lower = text.lowercased()
         guard let range = lower.range(of: keyword) else { return "" }
-        let start = text.index(range.lowerBound, offsetBy: -120, limitedBy: text.startIndex) ?? text.startIndex
-        let end = text.index(range.upperBound, offsetBy: 160, limitedBy: text.endIndex) ?? text.endIndex
+        let start = text.index(range.lowerBound, offsetBy: -200, limitedBy: text.startIndex) ?? text.startIndex
+        let end = text.index(range.upperBound, offsetBy: 200, limitedBy: text.endIndex) ?? text.endIndex
         return "…" + String(text[start..<end]).trimmingCharacters(in: .whitespacesAndNewlines) + "…"
     }
 
