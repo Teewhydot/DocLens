@@ -62,6 +62,15 @@ struct SettingsView: View {
             .tint(Theme.accent)
         } header: {
             sectionHeader("Preferences", icon: "slider.horizontal.3")
+        } footer: {
+            HStack {
+                Image(systemName: "checkmark.icloud.fill")
+                    .foregroundStyle(.green)
+                Text("iCloud Sync Active")
+            }
+            .font(.caption)
+            .foregroundStyle(.secondary)
+            .padding(.top, 4)
         }
     }
 
@@ -85,6 +94,18 @@ struct SettingsView: View {
                 HStack {
                     Label("Privacy Policy", systemImage: "hand.raised.fill")
                         .labelStyle(SettingsLabelStyle(color: Theme.crimson))
+                    Spacer()
+                    Image(systemName: "arrow.up.right")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                .foregroundStyle(.primary)
+            }
+            
+            Link(destination: URL(string: "mailto:support@superapp.com?subject=DocLens%20Support&body=App%20Version:%20\(appVersion)%20(\(buildNumber))")!) {
+                HStack {
+                    Label("Contact Support", systemImage: "envelope.fill")
+                        .labelStyle(SettingsLabelStyle(color: Theme.accent))
                     Spacer()
                     Image(systemName: "arrow.up.right")
                         .font(.caption)

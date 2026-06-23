@@ -27,6 +27,8 @@ struct PDFKitView: UIViewRepresentable {
 struct DocumentViewerView: View {
     @StateObject private var viewModel: DocumentViewerViewModel
     @Environment(\.dismiss) private var dismiss
+    @AppStorage("autoAnalyzeOnImport") private var autoAnalyze = true
+    @AppStorage("hapticFeedback") private var hapticFeedback = true
 
     init(document: DocumentEntity) {
         _viewModel = StateObject(wrappedValue: DocumentViewerViewModel(document: document))
@@ -55,6 +57,15 @@ struct DocumentViewerView: View {
             }
             .task {
                 await viewModel.refreshDocument()
+                if autoAnalyze && currentDoc.status == .pending && !viewModel.isAnalyzing {
+                    viewModel.runAnalysis()
+                }
+            }
+            .sensoryFeedback(.success, trigger: viewModel.showResults) { _, newValue in
+                return hapticFeedback && newValue
+            }
+            .sensoryFeedback(.error, trigger: viewModel.showError) { _, newValue in
+                return hapticFeedback && newValue
             }
         }
     }

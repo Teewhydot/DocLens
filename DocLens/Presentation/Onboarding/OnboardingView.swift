@@ -86,7 +86,7 @@ struct OnboardingView: View {
 
     private var backgroundGradient: some View {
         LinearGradient(
-            colors: [Color(hex: 0x0D1B2A), Color(hex: 0x0D1B2A).opacity(0.92)],
+            colors: [Color(hex: 0x0D1B2A), Color(hex: 0x0D1B2A)],
             startPoint: .topLeading,
             endPoint: .bottomTrailing
         )

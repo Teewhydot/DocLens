@@ -4,12 +4,13 @@ struct HistoryView: View {
     @StateObject private var viewModel = HistoryViewModel()
     @State private var searchText = ""
     @State private var selectedFilter: HistoryFilter = .all
+    @AppStorage("defaultSortNewest") private var sortNewest = true
 
     private var filtered: [DocumentEntity] {
         viewModel.documents
             .filter { selectedFilter.matches($0) }
             .filter { searchText.isEmpty || $0.title.localizedCaseInsensitiveContains(searchText) }
-            .sorted { $0.importedAt > $1.importedAt }
+            .sorted { sortNewest ? $0.importedAt > $1.importedAt : $0.importedAt < $1.importedAt }
     }
 
     private var grouped: [(String, [DocumentEntity])] {
@@ -25,7 +26,7 @@ struct HistoryView: View {
         let rest = dict.keys.filter { !order.contains($0) }.sorted(by: >)
         return (order.filter { dict[$0] != nil } + rest).compactMap { key in
             guard let val = dict[key] else { return nil }
-            return (key, val.sorted { $0.importedAt > $1.importedAt })
+            return (key, val.sorted { sortNewest ? $0.importedAt > $1.importedAt : $0.importedAt < $1.importedAt })
         }
     }
 

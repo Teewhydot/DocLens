@@ -11,6 +11,7 @@ struct HomeView: View {
     @State private var selectedDoc: DocumentEntity?
     @State private var importError: String?
     @State private var showImportError = false
+    @AppStorage("hapticFeedback") private var hapticFeedback = true
 
     var body: some View {
         NavigationStack {
@@ -57,6 +58,12 @@ struct HomeView: View {
             }
             .task {
                 await viewModel.fetchDocuments()
+            }
+            .sensoryFeedback(.success, trigger: selectedDoc != nil) { old, new in
+                return hapticFeedback && !old && new
+            }
+            .sensoryFeedback(.error, trigger: showImportError) { old, new in
+                return hapticFeedback && !old && new
             }
         }
     }
@@ -143,7 +150,9 @@ struct HomeView: View {
             Task {
                 do {
                     let doc = try await viewModel.importDocument(from: url, type: .pdf)
-                    await MainActor.run { selectedDoc = doc }
+                    await MainActor.run { 
+                        selectedDoc = doc
+                    }
                 } catch {
                     await MainActor.run {
                         importError = error.localizedDescription
@@ -166,7 +175,9 @@ struct HomeView: View {
                 try data.write(to: tempURL)
                 
                 let doc = try await viewModel.importDocument(from: tempURL, type: .image)
-                await MainActor.run { selectedDoc = doc }
+                await MainActor.run { 
+                    selectedDoc = doc
+                }
             } catch {
                 await MainActor.run {
                     importError = error.localizedDescription
