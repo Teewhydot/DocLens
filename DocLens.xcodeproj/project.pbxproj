@@ -20,6 +20,7 @@
 		7E785CE90E781CAB0BC39820 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E6B616DDB399929309DE30E /* LaunchScreen.storyboard */; };
 		A302344F8CADE4F26C5BF139 /* AnalysisService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924279D0CF9B62D7F27CCFFB /* AnalysisService.swift */; };
 		A38588562F27E7FB7F438D84 /* DocumentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8DB6AB90BB318B623CBF38 /* DocumentStore.swift */; };
+		B0F54A40B64480F58B37A0C5 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E10D9DFF569E0AE438AD67 /* OnboardingView.swift */; };
 		C09025C367D72CC8D6C2C81E /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F1A3F6C101F0E09462A806 /* MainTabView.swift */; };
 		C5F7F3511F858961AC715D3F /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34001A819564E899EEA5AF50 /* RootView.swift */; };
 		EA06BDD2BBC7240511A99BC5 /* SampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A2504A9CCA64AA9B19976F /* SampleData.swift */; };
@@ -44,6 +45,7 @@
 		CC6F9CEF1A3A58A8ACB563DD /* DocumentEntities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentEntities.swift; sourceTree = "<group>"; };
 		CF8DB6AB90BB318B623CBF38 /* DocumentStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentStore.swift; sourceTree = "<group>"; };
 		E10D16F88F90E4D2A1842BEE /* RiskRingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiskRingView.swift; sourceTree = "<group>"; };
+		F9E10D9DFF569E0AE438AD67 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -111,6 +113,14 @@
 			path = Theme;
 			sourceTree = "<group>";
 		};
+		91FD8B8911C9B2E8061DAF4E /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				F9E10D9DFF569E0AE438AD67 /* OnboardingView.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
 		95E7F73B05AB4D62F432C2DD /* Viewer */ = {
 			isa = PBXGroup;
 			children = (
@@ -161,6 +171,7 @@
 				D6AE97313504EECEAB1309DF /* Analysis */,
 				5C1E1EAC3333A8F75E55030A /* Common */,
 				58A7FC547709258E0D09AE97 /* Home */,
+				91FD8B8911C9B2E8061DAF4E /* Onboarding */,
 				85DC5AE626DFC4F26CA789E5 /* Theme */,
 				95E7F73B05AB4D62F432C2DD /* Viewer */,
 			);
@@ -242,6 +253,7 @@
 				31B6FE6E581BEBF99F282363 /* DocumentViewerView.swift in Sources */,
 				1B58D21685DAE3EE1E4E695C /* HomeView.swift in Sources */,
 				C09025C367D72CC8D6C2C81E /* MainTabView.swift in Sources */,
+				B0F54A40B64480F58B37A0C5 /* OnboardingView.swift in Sources */,
 				2F0FB58C5D77D8AD57EB7D91 /* RiskRingView.swift in Sources */,
 				C5F7F3511F858961AC715D3F /* RootView.swift in Sources */,
 				EA06BDD2BBC7240511A99BC5 /* SampleData.swift in Sources */,
