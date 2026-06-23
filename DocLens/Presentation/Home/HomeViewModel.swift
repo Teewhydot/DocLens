@@ -1,5 +1,7 @@
 import Foundation
 import SwiftUI
+import Combine
+import CoreData
 
 @MainActor
 final class HomeViewModel: ObservableObject {
@@ -7,11 +9,21 @@ final class HomeViewModel: ObservableObject {
     
     private let repository: DocumentRepository
     private let fileImportService: FileImportService
+    private var cancellables = Set<AnyCancellable>()
     
     init(repository: DocumentRepository = CoreDataDocumentRepository(),
          fileImportService: FileImportService = LocalFileImportService()) {
         self.repository = repository
         self.fileImportService = fileImportService
+        
+        NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                Task {
+                    await self?.fetchDocuments()
+                }
+            }
+            .store(in: &cancellables)
     }
     
     func fetchDocuments() async {

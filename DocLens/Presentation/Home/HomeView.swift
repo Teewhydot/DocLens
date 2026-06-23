@@ -11,6 +11,7 @@ struct HomeView: View {
     @State private var selectedDoc: DocumentEntity?
     @State private var importError: String?
     @State private var showImportError = false
+    @State private var showPhotosPicker = false
     @AppStorage("hapticFeedback") private var hapticFeedback = true
 
     var body: some View {
@@ -26,8 +27,18 @@ struct HomeView: View {
             .navigationTitle("DocLens")
             .toolbar { toolbarContent }
             .confirmationDialog("Import Document", isPresented: $showImportOptions, titleVisibility: .visible) {
-                Button("Import PDF") { showFilePicker = true }
-                Button("Import Image") {}  // triggered via PhotosPicker below
+                Button("Import PDF") { 
+                    Task { @MainActor in
+                        try? await Task.sleep(nanoseconds: 100_000_000)
+                        showFilePicker = true 
+                    }
+                }
+                Button("Import Image") { 
+                    Task { @MainActor in
+                        try? await Task.sleep(nanoseconds: 100_000_000)
+                        showPhotosPicker = true 
+                    }
+                }
                 Button("Cancel", role: .cancel) {}
             }
             .alert("Delete Document?", isPresented: deletionActiveBinding) {
@@ -46,7 +57,7 @@ struct HomeView: View {
                           allowsMultipleSelection: false) { result in
                 handlePDFImport(result: result)
             }
-            .photosPicker(isPresented: $showImportOptions.photosTrigger,
+            .photosPicker(isPresented: $showPhotosPicker,
                           selection: $photoPickerItem,
                           matching: .images)
             .onChange(of: photoPickerItem) { _, item in
@@ -145,9 +156,10 @@ struct HomeView: View {
             showImportError = true
         case .success(let urls):
             guard let url = urls.first else { return }
-            let accessing = url.startAccessingSecurityScopedResource()
-            defer { if accessing { url.stopAccessingSecurityScopedResource() } }
             Task {
+                let accessing = url.startAccessingSecurityScopedResource()
+                defer { if accessing { url.stopAccessingSecurityScopedResource() } }
+                
                 do {
                     let doc = try await viewModel.importDocument(from: url, type: .pdf)
                     await MainActor.run { 
@@ -193,12 +205,7 @@ struct HomeView: View {
     // Moved to DocumentViewerViewModel and AnalyzeDocumentUseCase
 }
 
-// MARK: - Binding extension for PhotosPicker trigger
-
-private extension Binding where Value == Bool {
-    /// Unused — photos picker is driven directly via toolbar Menu.
-    var photosTrigger: Binding<Bool> { self }
-}
+// Removed unused binding extension
 
 #Preview("Populated") {
     HomeView()
