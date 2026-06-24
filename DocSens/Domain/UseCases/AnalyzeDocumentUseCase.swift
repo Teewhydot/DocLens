@@ -44,7 +44,7 @@ final class AnalyzeDocumentUseCaseImpl: AnalyzeDocumentUseCase {
             try await documentRepository.saveRiskFlags(result.flags, for: documentId)
             
             // 6. Trigger a local push notification
-            let title = "DocLens Analysis Complete"
+            let title = "DocSens Analysis Complete"
             let body = "Finished analyzing \"\(document.title)\"."
             // Ignore errors for notification scheduling
             try? await notificationService.scheduleLocalNotification(title: title, body: body)

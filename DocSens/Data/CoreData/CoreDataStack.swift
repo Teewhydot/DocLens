@@ -8,7 +8,7 @@ final class CoreDataStack: Sendable {
     
     private init() {
         let model = Self.createManagedObjectModel()
-        container = NSPersistentCloudKitContainer(name: "DocLens", managedObjectModel: model)
+        container = NSPersistentCloudKitContainer(name: "DocSens", managedObjectModel: model)
         
         guard let description = container.persistentStoreDescriptions.first else {
             fatalError("No Descriptions found")

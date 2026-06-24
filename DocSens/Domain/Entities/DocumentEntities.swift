@@ -75,7 +75,7 @@ struct DocumentEntity: Identifiable, Hashable, Codable {
     var title: String
     var importedAt: Date
     var fileType: FileType
-    /// Relative filename inside the app's Documents/DocLens/ folder (or nil for unsaved docs)
+    /// Relative filename inside the app's Documents/DocSens/ folder (or nil for unsaved docs)
     var savedFileName: String?
     var extractedText: String
     var detectedLanguage: String
@@ -110,7 +110,7 @@ struct DocumentEntity: Identifiable, Hashable, Codable {
     var resolvedFileURL: URL? {
         guard let name = savedFileName else { return nil }
         let base = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        return base.appendingPathComponent("DocLens", isDirectory: true).appendingPathComponent(name)
+        return base.appendingPathComponent("DocSens", isDirectory: true).appendingPathComponent(name)
     }
 }
 

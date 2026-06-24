@@ -26,7 +26,7 @@ struct SettingsView: View {
                 Button("Reset", role: .destructive) { hasCompletedOnboarding = false }
                 Button("Cancel", role: .cancel) {}
             } message: {
-                Text("You'll see the DocLens intro screens next time you open the app.")
+                Text("You'll see the DocSens intro screens next time you open the app.")
             }
             .alert("Clear All History?", isPresented: $showClearHistoryConfirm) {
                 Button("Clear All", role: .destructive) { 
@@ -78,7 +78,7 @@ struct SettingsView: View {
 
     private var aboutSection: some View {
         Section {
-            settingsRow(icon: "doc.text.magnifyingglass", color: Theme.accent, title: "DocLens") {
+            settingsRow(icon: "doc.text.magnifyingglass", color: Theme.accent, title: "DocSens") {
                 Text("Document Risk Analyzer")
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -102,7 +102,7 @@ struct SettingsView: View {
                 .foregroundStyle(.primary)
             }
             
-            Link(destination: URL(string: "mailto:support@superapp.com?subject=DocLens%20Support&body=App%20Version:%20\(appVersion)%20(\(buildNumber))")!) {
+            Link(destination: URL(string: "mailto:support@superapp.com?subject=DocSens%20Support&body=App%20Version:%20\(appVersion)%20(\(buildNumber))")!) {
                 HStack {
                     Label("Contact Support", systemImage: "envelope.fill")
                         .labelStyle(SettingsLabelStyle(color: Theme.accent))
@@ -114,7 +114,7 @@ struct SettingsView: View {
                 .foregroundStyle(.primary)
             }
         } header: {
-            sectionHeader("About DocLens", icon: "info.circle")
+            sectionHeader("About DocSens", icon: "info.circle")
         }
     }
 

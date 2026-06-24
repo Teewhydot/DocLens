@@ -1,11 +1,11 @@
-name: DocLens
+name: DocSens
 options:
   bundleIdPrefix: com.superapp
   developmentLanguage: en
 
 settings:
   base:
-    PRODUCT_NAME: DocLens
+    PRODUCT_NAME: DocSens
     SWIFT_VERSION: 6.0
     MARKETING_VERSION: 1.0
     CURRENT_PROJECT_VERSION: 1
@@ -21,17 +21,17 @@ settings:
       ENABLE_NS_ASSERTIONS: NO
 
 targets:
-  DocLens:
+  DocSens:
     type: application
     platform: iOS
     deploymentTarget: '17.0'
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.superapp.doclens
+        PRODUCT_BUNDLE_IDENTIFIER: com.superapp.docsens
     sources:
-      - path: DocLens
+      - path: DocSens
     info:
-      path: DocLens/Info.plist
+      path: DocSens/Info.plist
       properties:
         CFBundleDevelopmentRegion: $(DEVELOPMENT_LANGUAGE)
         CFBundleDisplayName: $(PRODUCT_NAME)
@@ -59,10 +59,10 @@ targets:
           - UIInterfaceOrientationLandscapeRight
 
 schemes:
-  DocLens:
+  DocSens:
     build:
       targets:
-        DocLens: all
+        DocSens: all
     run:
       config: Debug
     archive:

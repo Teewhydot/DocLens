@@ -24,7 +24,7 @@ struct HomeView: View {
                 }
             }
             .background(Theme.background.ignoresSafeArea())
-            .navigationTitle("DocLens")
+            .navigationTitle("DocSens")
             .toolbar { toolbarContent }
             .confirmationDialog("Import Document", isPresented: $showImportOptions, titleVisibility: .visible) {
                 Button("Import PDF") { 

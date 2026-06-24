@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct DocLensApp: App {
+struct DocSensApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()

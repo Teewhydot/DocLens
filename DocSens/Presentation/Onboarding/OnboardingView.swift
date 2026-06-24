@@ -24,7 +24,7 @@ private let pages: [OnboardingPage] = [
         icon: "doc.text.magnifyingglass",
         iconColors: [Color(hex: 0x0ABFBC), Color(hex: 0x0D7A78)],
         title: "Understand Any Contract",
-        subtitle: "DocLens reads legal documents and highlights what matters — in plain language.",
+        subtitle: "DocSens reads legal documents and highlights what matters — in plain language.",
         bullets: [
             .init(icon: "checkmark.shield.fill", color: Color(hex: 0x0ABFBC), text: "Spot risky clauses instantly"),
             .init(icon: "doc.plaintext.fill", color: Color(hex: 0x0ABFBC), text: "Works with PDFs and images"),

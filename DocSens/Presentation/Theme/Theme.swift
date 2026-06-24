@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Centralized design tokens for DocLens.
+/// Centralized design tokens for DocSens.
 /// Palette: deep navy primary, electric teal accent, soft white background,
 /// warning amber, danger crimson. All colors are dark-mode aware.
 enum Theme {

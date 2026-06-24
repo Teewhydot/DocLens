@@ -3,7 +3,7 @@ import Foundation
 final class LocalFileImportService: FileImportService {
     static let documentsFolder: URL = {
         let base = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        let folder = base.appendingPathComponent("DocLens", isDirectory: true)
+        let folder = base.appendingPathComponent("DocSens", isDirectory: true)
         try? FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
         return folder
     }()
