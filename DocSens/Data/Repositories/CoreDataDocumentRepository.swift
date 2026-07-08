@@ -83,8 +83,8 @@ final class CoreDataDocumentRepository: DocumentRepository, @unchecked Sendable 
             for m in oldMentions { self.context.delete(m) }
             
             // Insert new ones
+            guard let desc = NSEntityDescription.entity(forEntityName: "EntityMention", in: self.context) else { return }
             for entity in entities {
-                guard let desc = NSEntityDescription.entity(forEntityName: "EntityMention", in: self.context) else { continue }
                 let managedMention = NSManagedObject(entity: desc, insertInto: self.context)
                 managedMention.setValue(entity.id, forKey: "id")
                 managedMention.setValue(entity.type.rawValue, forKey: "type")
@@ -119,8 +119,8 @@ final class CoreDataDocumentRepository: DocumentRepository, @unchecked Sendable 
             for f in oldFlags { self.context.delete(f) }
             
             // Insert new ones
+            guard let desc = NSEntityDescription.entity(forEntityName: "RiskFlag", in: self.context) else { return }
             for flag in flags {
-                guard let desc = NSEntityDescription.entity(forEntityName: "RiskFlag", in: self.context) else { continue }
                 let managedFlag = NSManagedObject(entity: desc, insertInto: self.context)
                 managedFlag.setValue(flag.id, forKey: "id")
                 managedFlag.setValue(flag.keyword, forKey: "keyword")
