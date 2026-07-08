@@ -37,3 +37,5 @@ web-build/
 *.log
 .env
 .env.local
+swift-6.0/
+*.tar.gz
