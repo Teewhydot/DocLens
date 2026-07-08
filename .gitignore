@@ -37,3 +37,4 @@ web-build/
 *.log
 .env
 .env.local
+swift-5.10-RELEASE-ubuntu22.04
