@@ -105,8 +105,20 @@ enum SampleData {
     @MainActor
     static func populateCoreData(repository: DocumentRepository) async {
         guard let docs = try? await repository.getAllDocuments(), docs.isEmpty else { return }
-        for doc in documents { try? await repository.saveDocument(doc) }
-        for (id, entities) in entityMentions { try? await repository.saveEntities(entities, for: id) }
-        for (id, flags) in riskFlags { try? await repository.saveRiskFlags(flags, for: id) }
+
+        await withTaskGroup(of: Void.self) { group in
+            for doc in documents {
+                group.addTask { try? await repository.saveDocument(doc) }
+            }
+        }
+
+        await withTaskGroup(of: Void.self) { group in
+            for (id, entities) in entityMentions {
+                group.addTask { try? await repository.saveEntities(entities, for: id) }
+            }
+            for (id, flags) in riskFlags {
+                group.addTask { try? await repository.saveRiskFlags(flags, for: id) }
+            }
+        }
     }
 }
