@@ -5,6 +5,7 @@ protocol DocumentRepository: Sendable {
     func getDocument(id: UUID) async throws -> DocumentEntity?
     func saveDocument(_ document: DocumentEntity) async throws
     func deleteDocument(id: UUID) async throws
+    func deleteAllDocuments() async throws
     func getAllDocuments() async throws -> [DocumentEntity]
     
     func getEntities(for documentId: UUID) async throws -> [EntityMentionEntity]

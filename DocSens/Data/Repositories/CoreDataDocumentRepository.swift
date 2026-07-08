@@ -54,6 +54,19 @@ final class CoreDataDocumentRepository: DocumentRepository, @unchecked Sendable 
         }
     }
     
+    func deleteAllDocuments() async throws {
+        try await context.perform {
+            let request = NSFetchRequest<NSManagedObject>(entityName: "DocumentRecord")
+            let results = try self.context.fetch(request)
+            for doc in results {
+                self.context.delete(doc)
+            }
+            if self.context.hasChanges {
+                try self.context.save()
+            }
+        }
+    }
+
     func getAllDocuments() async throws -> [DocumentEntity] {
         return try await context.perform {
             let request = NSFetchRequest<NSManagedObject>(entityName: "DocumentRecord")

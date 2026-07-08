@@ -14,12 +14,16 @@ final class SettingsViewModel: ObservableObject {
     
     func clearAllHistory() async {
         if let docs = try? await repository.getAllDocuments() {
-            for doc in docs {
-                if let saved = doc.savedFileName {
-                    try? fileImportService.deleteFile(filename: saved)
+            await withTaskGroup(of: Void.self) { group in
+                for doc in docs {
+                    if let saved = doc.savedFileName {
+                        group.addTask {
+                            try? self.fileImportService.deleteFile(filename: saved)
+                        }
+                    }
                 }
-                try? await repository.deleteDocument(id: doc.id)
             }
+            try? await repository.deleteAllDocuments()
         }
     }
 }
