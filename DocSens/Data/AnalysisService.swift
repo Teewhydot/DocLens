@@ -225,7 +225,7 @@ actor AnalysisService {
 
     // MARK: - Risk score
 
-    private func computeRiskScore(flags: [RiskFlagEntity]) -> Double {
+    func computeRiskScore(flags: [RiskFlagEntity]) -> Double {
         guard !flags.isEmpty else { return 0 }
         let weights: [RiskSeverity: Double] = [.low: 0.05, .medium: 0.15, .high: 0.3]
         let raw = flags.reduce(0.0) { $0 + (weights[$1.severity] ?? 0) }
