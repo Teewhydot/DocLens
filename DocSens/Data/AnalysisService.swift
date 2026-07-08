@@ -55,29 +55,46 @@ actor AnalysisService {
               let pdf = CGPDFDocument(dataProvider) else {
             throw AnalysisError.unreadableFile
         }
-        var pages: [String] = []
         let pageCount = min(pdf.numberOfPages, 10) // cap at 10 pages for performance
-        for i in 1...pageCount {
-            guard let page = pdf.page(at: i) else { continue }
-            let pageRect = page.getBoxRect(.mediaBox)
-            let renderer = UIGraphicsImageRenderer(size: pageRect.size)
-            let img = renderer.image { ctx in
-                UIColor.white.setFill()
-                ctx.fill(pageRect)
-                ctx.cgContext.translateBy(x: 0, y: pageRect.size.height)
-                ctx.cgContext.scaleBy(x: 1.0, y: -1.0)
-                ctx.cgContext.drawPDFPage(page)
+        guard pageCount > 0 else { return "" }
+
+        var pagesText: [(Int, String)] = []
+
+        try await withThrowingTaskGroup(of: (Int, String)?.self) { group in
+            for i in 1...pageCount {
+                group.addTask {
+                    guard let taskDataProvider = CGDataProvider(url: url as CFURL),
+                          let taskPdf = CGPDFDocument(taskDataProvider),
+                          let page = taskPdf.page(at: i) else { return nil }
+
+                    let pageRect = page.getBoxRect(.mediaBox)
+                    let renderer = UIGraphicsImageRenderer(size: pageRect.size)
+                    let img = renderer.image { ctx in
+                        UIColor.white.setFill()
+                        ctx.fill(pageRect)
+                        ctx.cgContext.translateBy(x: 0, y: pageRect.size.height)
+                        ctx.cgContext.scaleBy(x: 1.0, y: -1.0)
+                        ctx.cgContext.drawPDFPage(page)
+                    }
+                    if let cg = img.cgImage {
+                        if let pageText = try? await self.recognizeText(in: cg) {
+                            return (i, pageText)
+                        }
+                    }
+                    return nil
+                }
             }
-            if let cg = img.cgImage {
-                if let pageText = try? await recognizeText(in: cg) {
-                    pages.append(pageText)
+            for try await result in group {
+                if let result = result {
+                    pagesText.append(result)
                 }
             }
         }
-        return pages.joined(separator: "\n\n")
+
+        return pagesText.sorted(by: { $0.0 < $1.0 }).map { $0.1 }.joined(separator: "\n\n")
     }
 
-    private func recognizeText(in cgImage: CGImage) async throws -> String {
+    nonisolated private func recognizeText(in cgImage: CGImage) async throws -> String {
         try await withCheckedThrowingContinuation { continuation in
             let request = VNRecognizeTextRequest { req, err in
                 if let err { continuation.resume(throwing: err); return }
