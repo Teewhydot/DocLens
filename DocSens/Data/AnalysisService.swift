@@ -209,15 +209,14 @@ actor AnalysisService {
         var flags: [RiskFlagEntity] = []
         for rule in Self.riskKeywords {
             guard lower.contains(rule.keyword) else { continue }
-            let excerpt = extractExcerpt(for: rule.keyword, in: text)
+            let excerpt = extractExcerpt(for: rule.keyword, in: text, lowercasedText: lower)
             flags.append(RiskFlagEntity(keyword: rule.keyword, category: rule.category, severity: rule.severity, excerptContext: excerpt))
         }
         return flags
     }
 
-    private func extractExcerpt(for keyword: String, in text: String) -> String {
-        let lower = text.lowercased()
-        guard let range = lower.range(of: keyword) else { return "" }
+    private func extractExcerpt(for keyword: String, in text: String, lowercasedText: String) -> String {
+        guard let range = lowercasedText.range(of: keyword) else { return "" }
         let start = text.index(range.lowerBound, offsetBy: -200, limitedBy: text.startIndex) ?? text.startIndex
         let end = text.index(range.upperBound, offsetBy: 200, limitedBy: text.endIndex) ?? text.endIndex
         return "…" + String(text[start..<end]).trimmingCharacters(in: .whitespacesAndNewlines) + "…"
