@@ -83,14 +83,15 @@ final class CoreDataDocumentRepository: DocumentRepository, @unchecked Sendable 
             for m in oldMentions { self.context.delete(m) }
             
             // Insert new ones
-            for entity in entities {
-                guard let desc = NSEntityDescription.entity(forEntityName: "EntityMention", in: self.context) else { continue }
-                let managedMention = NSManagedObject(entity: desc, insertInto: self.context)
-                managedMention.setValue(entity.id, forKey: "id")
-                managedMention.setValue(entity.type.rawValue, forKey: "type")
-                managedMention.setValue(entity.value, forKey: "value")
-                managedMention.setValue(entity.confidence, forKey: "confidence")
-                managedMention.setValue(managedDoc, forKey: "document")
+            if let desc = NSEntityDescription.entity(forEntityName: "EntityMention", in: self.context) {
+                for entity in entities {
+                    let managedMention = NSManagedObject(entity: desc, insertInto: self.context)
+                    managedMention.setValue(entity.id, forKey: "id")
+                    managedMention.setValue(entity.type.rawValue, forKey: "type")
+                    managedMention.setValue(entity.value, forKey: "value")
+                    managedMention.setValue(entity.confidence, forKey: "confidence")
+                    managedMention.setValue(managedDoc, forKey: "document")
+                }
             }
             
             if self.context.hasChanges {
@@ -119,15 +120,16 @@ final class CoreDataDocumentRepository: DocumentRepository, @unchecked Sendable 
             for f in oldFlags { self.context.delete(f) }
             
             // Insert new ones
-            for flag in flags {
-                guard let desc = NSEntityDescription.entity(forEntityName: "RiskFlag", in: self.context) else { continue }
-                let managedFlag = NSManagedObject(entity: desc, insertInto: self.context)
-                managedFlag.setValue(flag.id, forKey: "id")
-                managedFlag.setValue(flag.keyword, forKey: "keyword")
-                managedFlag.setValue(flag.category.rawValue, forKey: "category")
-                managedFlag.setValue(flag.severity.rawValue, forKey: "severity")
-                managedFlag.setValue(flag.excerptContext, forKey: "excerptContext")
-                managedFlag.setValue(managedDoc, forKey: "document")
+            if let desc = NSEntityDescription.entity(forEntityName: "RiskFlag", in: self.context) {
+                for flag in flags {
+                    let managedFlag = NSManagedObject(entity: desc, insertInto: self.context)
+                    managedFlag.setValue(flag.id, forKey: "id")
+                    managedFlag.setValue(flag.keyword, forKey: "keyword")
+                    managedFlag.setValue(flag.category.rawValue, forKey: "category")
+                    managedFlag.setValue(flag.severity.rawValue, forKey: "severity")
+                    managedFlag.setValue(flag.excerptContext, forKey: "excerptContext")
+                    managedFlag.setValue(managedDoc, forKey: "document")
+                }
             }
             
             if self.context.hasChanges {
