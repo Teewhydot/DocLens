@@ -58,6 +58,18 @@ targets:
           - UIInterfaceOrientationLandscapeLeft
           - UIInterfaceOrientationLandscapeRight
 
+  DocSensTests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: '17.0'
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.superapp.docsens.tests
+    sources:
+      - path: DocSensTests
+    dependencies:
+      - target: DocSens
+
 schemes:
   DocSens:
     build:
@@ -65,5 +77,9 @@ schemes:
         DocSens: all
     run:
       config: Debug
+    test:
+      config: Debug
+      targets:
+        - DocSensTests
     archive:
       config: Release
