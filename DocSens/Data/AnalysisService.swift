@@ -215,7 +215,7 @@ actor AnalysisService {
         return flags
     }
 
-    private func extractExcerpt(for keyword: String, in text: String) -> String {
+    func extractExcerpt(for keyword: String, in text: String) -> String {
         let lower = text.lowercased()
         guard let range = lower.range(of: keyword) else { return "" }
         let start = text.index(range.lowerBound, offsetBy: -200, limitedBy: text.startIndex) ?? text.startIndex
